@@ -16,20 +16,27 @@ function showHeadlines() {
     // GET HEADLINE ON SUCCESSFUL CONNECTION
     xhr.onload = function() {
         document.getElementById('ajax-wait').style.display = 'none';
-        
+        const headlines = [];
         if(xhr.status === 200 ){
             var newsData = JSON.parse(xhr.responseText);
             
             for(let i = 0; i<newsData.articles.length; i++){
-                console.log(newsData.articles[i].title);
+                headlines.push('<div class="headline"> <a href="#article" class="headline-link" >');
+                headlines.push(newsData.articles[i].title);
+                headlines.push('</a></div>');
             }
-        }
-        
+            
+            headlines.forEach(headline => {
+                document.getElementById('headlines').innerHTML = headlines.join('\r');
+            });
+        } 
     };
     
-    // 
     xhr.onerror = function() {
         spinner.style.display = 'none';
+        const errorText = document.getElementById('error');
+        
+        errorText.innerHTML = "Unable to get headlines, Please try again later."
     }
     
     xhr.send();
