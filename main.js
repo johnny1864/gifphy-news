@@ -52,13 +52,18 @@ function showGifs(title) {
     console.log('headline is ',title);
     const xhr = new XMLHttpRequest();
     
-    xhr.open("GET", `${giphyURL}search?q=${title}&api_key=${giphy_key}&limit=5`);
+    xhr.open("GET", `${giphyURL}search?q=${title}&api_key=${giphy_key}`);
     
     xhr.onload = function() {
         if(xhr.status === 200){
             const gif_data = JSON.parse(xhr.responseText);
-            console.log(gif_data['data']);
-            //document.getElementById('gifs').innerHTML = ''
+            console.log(gif_data['data'][0]['images']);
+            let gif_imgs = [];
+            for(let i =0; i < gif_data['data'].length; i++){
+                 gif_imgs.push(`<img src='${gif_data['data'][i]['images']['fixed_width'].url}'>`);
+            }
+            // console.log(gif_imgs);
+            document.getElementById('gifs').innerHTML = gif_imgs.join(' ');
         }
     }
     
